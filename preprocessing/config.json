@@ -1,0 +1,10 @@
+{
+  "squad_train_file": "../../squad_dataset/train-v1.1.json",
+  "squad_dev_file": "../../squad_dataset/dev-v1.1.json",
+  "articles_train_file": "../data/doclist-train.txt",
+  "articles_dev_file": "../data/doclist-dev.txt",
+  "articles_test_file": "../data/doclist-test.txt",
+  "train_file": "../data/train.txt",
+  "dev_file": "../data/dev.txt",
+  "test_file": "../data/test.txt"
+}
