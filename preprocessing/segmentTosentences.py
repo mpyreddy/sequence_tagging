@@ -58,7 +58,7 @@ def getSentenceLevelData(articles_filename, dataset, result_filename):
 
             para_tags = []
             for sent_words in para_words:
-                para_tags.append([False]*len(sent_words))
+                para_tags.append(["O"]*len(sent_words))
 
             qas = dataset[i]['paragraphs'][j]['qas']
 
@@ -91,7 +91,10 @@ def getSentenceLevelData(articles_filename, dataset, result_filename):
                                     num_sentences -= 1
                                 for aw in range(w, w+len(answer_words)):
                                     try:
-                                        para_tags[k][aw] = True
+                                        if aw == w:
+                                            para_tags[k][aw] = "B-KP"
+                                        else:
+                                            para_tags[k][aw] = "I-KP"
                                     except Exception as e:
                                         print para_words[k], answer_phrase
                                         counter += 1
@@ -127,7 +130,7 @@ def getSentenceLevelData(articles_filename, dataset, result_filename):
     f = open(result_filename, "w")
     for sent in range(len(result_words)):
         for word in range(len(result_words[sent])):
-            f.write(result_words[sent][word] + " " + str(result_tags[sent][word]) + "\n")
+            f.write(result_words[sent][word] + " " + result_tags[sent][word] + "\n")
         f.write("\n")
 
 
