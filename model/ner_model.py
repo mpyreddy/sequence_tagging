@@ -334,13 +334,14 @@ class NERModel(BaseModel):
 
                 #keyphrase evaluation
                 for (a, b) in zip(lab, lab_pred):
-                    if a != "O":
+                    if a != 0:
                         total_correct += 1
-                        if "KP" in a and "KP" in b:
-                            correct_preds += 1
 
                     if b!= "O":
                         total_preds += 1
+
+                    if a != 0 and b != 0:
+                        correct_preds += 1
 
         chunk_p = chunk_correct_preds / chunk_total_preds if chunk_correct_preds > 0 else 0
         chunk_r = chunk_correct_preds / chunk_total_correct if chunk_correct_preds > 0 else 0
