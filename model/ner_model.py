@@ -353,7 +353,7 @@ class NERModel(BaseModel):
         f1  = 2 * p * r / (p + r) if correct_preds > 0 else 0
         acc = np.mean(accs)
 
-        return {"acc": 100*acc, "chunk_f1": 100*chunk_f1, "f1": 100*f1, "p": 100*p, "r": 100*r}
+        return {"acc": 100*acc, "chunk_f1": 100*chunk_f1, "f1": 100*f1, "p": p, "r": r}
 
 
     def predict(self, words_raw):

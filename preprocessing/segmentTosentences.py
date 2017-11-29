@@ -5,11 +5,18 @@ import re
 from collections import defaultdict
 from textblob import TextBlob
 import nltk
+from nltk.tag.stanford import CoreNLPParser
+import sys
 
+reload(sys)
+sys.setdefaultencoding('utf8')
+st = CoreNLPParser(url='http://localhost:9000')
 
 def getSentenceLevelData(articles_filename, dataset, result_filename):
     def spans(txt, para_offset):
-        tokens = nltk.word_tokenize(txt)
+        #tokens = nltk.word_tokenize(txt)
+        tokens = list(st.tokenize(txt))
+        tokens = list(st.tokenize(' '.join(tokens)))
         result = []
         offset = 0
         for token in tokens:
@@ -68,10 +75,12 @@ def getSentenceLevelData(articles_filename, dataset, result_filename):
                 for qa in qas:
                     for ans in qa['answers']:
                         start = int(ans['answer_start'])
-                        answer_phrase = re.sub(r'[^\x00-\x7F]+',' ', ans['text'].lower())
+                        answer_phrase = re.sub(r'[^\x00-\x7F]+',' ', ans['text'])
                         answer_phrase = re.sub(r'-', ' ', answer_phrase)
 
-                        answer_words = nltk.word_tokenize(answer_phrase)
+                        #answer_words = nltk.word_tokenize(answer_phrase)
+                        answer_words = list(st.tokenize(answer_phrase))
+                        answer_words = list(st.tokenize(' '.join(answer_words)))
 
                         num_words_sent = len(para_info[k])
                         w = 0
@@ -157,7 +166,6 @@ if __name__ == '__main__':
 
     total_articles = train_dataset['data'] + dev_dataset['data']
 
-
-    getSentenceLevelData(articles_train_file, total_articles, train_filename)
-    getSentenceLevelData(articles_dev_file, total_articles, dev_filename)
     getSentenceLevelData(articles_test_file, total_articles, test_filename)
+    getSentenceLevelData(articles_train_file, total_articles, train_filename)
+    #getSentenceLevelData(articles_dev_file, total_articles, dev_filename)
