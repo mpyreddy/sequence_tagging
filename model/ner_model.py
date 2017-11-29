@@ -337,7 +337,7 @@ class NERModel(BaseModel):
                     if a != 0:
                         total_correct += 1
 
-                    if b!= "O":
+                    if b!= 0:
                         total_preds += 1
 
                     if a != 0 and b != 0:
