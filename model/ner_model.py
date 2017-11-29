@@ -313,6 +313,7 @@ class NERModel(BaseModel):
         accs = []
         chunk_correct_preds, chunk_total_correct, chunk_total_preds = 0., 0., 0.
         correct_preds, total_preds, total_correct = 0., 0., 0.
+        idx_to_tag = {idx: tag for tag, idx in self.config.vocab_tags.items()}
         for words, labels in minibatches(test, self.config.batch_size):
             labels_pred, sequence_lengths = self.predict_batch(words)
 
@@ -334,13 +335,13 @@ class NERModel(BaseModel):
 
                 #keyphrase evaluation
                 for (a, b) in zip(lab, lab_pred):
-                    if a != 0:
+                    if idx_to_tag[a] != "O":
                         total_correct += 1
 
-                    if b!= 0:
+                    if idx_to_tag[b]!= "O":
                         total_preds += 1
 
-                    if a != 0 and b != 0:
+                    if idx_to_tag[a] != "O" and idx_to_tag[b] != "O":
                         correct_preds += 1
 
         chunk_p = chunk_correct_preds / chunk_total_preds if chunk_correct_preds > 0 else 0
